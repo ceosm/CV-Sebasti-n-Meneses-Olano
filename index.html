@@ -19,6 +19,7 @@
             background-color: #f8f7f4;
             color: #3f3c3a;
         }
+        /* ESTILO CRÍTICO PARA EL GRÁFICO: Asegura que el contenedor maneje el tamaño */
         .chart-container {
             position: relative;
             width: 100%;
@@ -153,6 +154,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Lógica de navegación móvil
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
 
@@ -160,6 +162,7 @@
                 mobileMenu.classList.toggle('hidden');
             });
 
+            // --- LÓGICA DE EXPERIENCIA LABORAL ---
             const experienceData = [
                 {
                     id: 'exp1',
@@ -235,70 +238,95 @@
 
             displayExperienceDetails('exp1');
 
-            const ctx = document.getElementById('skillsChart').getContext('2d');
-            const skillsChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: [
-                        'Comunicación Estratégica',
-                        'Marketing Digital',
-                        'Liderazgo Creativo',
-                        'Gestión de CX y Crisis',
-                        'Tecnología MarTech (CRM)',
-                        'Relaciones Públicas',
-                        'Creación de Contenido'
-                    ],
-                    datasets: [{
-                        label: 'Nivel de Competencia',
-                        data: [9, 8, 8, 9, 8, 7, 9],
-                        backgroundColor: 'rgba(140, 122, 107, 0.2)',
-                        borderColor: 'rgba(140, 122, 107, 1)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(140, 122, 107, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(140, 122, 107, 1)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: 12
-                                },
-                                color: '#3f3c3a'
-                            },
-                            ticks: {
-                                backdropColor: 'transparent',
-                                stepSize: 2,
-                                color: '#8c7a6b'
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 10
-                        }
+            // --- LÓGICA DEL GRÁFICO DE HABILIDADES (RADAR CHART) ---
+            
+            // Función para inicializar el gráfico de radar
+            function initializeSkillsChart() {
+                const canvasElement = document.getElementById('skillsChart');
+                if (!canvasElement) return;
+
+                const ctx = canvasElement.getContext('2d');
+                
+                // Si el gráfico ya existe, destrúyelo primero para evitar duplicados (un fix común)
+                if (window.skillsChartInstance) {
+                    window.skillsChartInstance.destroy();
+                }
+
+                window.skillsChartInstance = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: [
+                            'Comunicación Estratégica',
+                            'Marketing Digital',
+                            'Liderazgo Creativo',
+                            'Gestión de CX y Crisis',
+                            'Tecnología MarTech (CRM)',
+                            'Relaciones Públicas',
+                            'Creación de Contenido'
+                        ],
+                        datasets: [{
+                            label: 'Nivel de Competencia',
+                            data: [9, 8, 8, 9, 8, 7, 9],
+                            backgroundColor: 'rgba(140, 122, 107, 0.2)',
+                            borderColor: 'rgba(140, 122, 107, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(140, 122, 107, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(140, 122, 107, 1)'
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            display: false
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                },
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                },
+                                pointLabels: {
+                                    font: {
+                                        size: 12
+                                    },
+                                    color: '#3f3c3a'
+                                },
+                                ticks: {
+                                    backdropColor: 'transparent',
+                                    stepSize: 2,
+                                    color: '#8c7a6b'
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 10
+                            }
                         },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.dataset.label}: ${context.raw}/10`;
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.raw}/10`;
+                                    }
                                 }
                             }
                         }
                     }
-                }
+                });
+            }
+
+            // Inicializar el gráfico
+            initializeSkillsChart();
+
+            // Asegurar que el gráfico se redibuje si el navegador cambia de tamaño
+            window.addEventListener('resize', () => {
+                 // Si bien Chart.js es responsive, a veces forzar una actualización ayuda en la inicialización dentro de contenedores complejos.
+                 if (window.skillsChartInstance) {
+                    window.skillsChartInstance.resize();
+                 }
             });
         });
     </script>
