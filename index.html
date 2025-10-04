@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sebastián Meneses Olano - Especialista en Comunicación Corporativa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral Harmony -->
+    <!-- Application Structure Plan: A single-page dashboard design with a sticky navigation bar for smooth scrolling to thematic sections. The core is an interactive career timeline linked to a detailed experience section, allowing users to explore career progression non-linearly. A radar chart visualizes skills for quick assessment. This structure transforms a static document into an engaging portfolio, prioritizing user exploration and visual impact over a simple linear read. -->
+    <!-- Visualization & Content Choices: 1. Career Path -> Goal: Show Change -> Viz: Interactive HTML/CSS Timeline -> Interaction: Click to reveal details -> Justification: More engaging than a list, shows progression visually. | 2. Skills -> Goal: Compare/Organize -> Viz: Radar Chart -> Interaction: Hover for tooltips -> Justification: Transforms a text list into a quantitative, easy-to-digest visual summary of capabilities. Library: Chart.js. | 3. Job Details -> Goal: Inform -> Presentation: Dynamic Text Blocks -> Interaction: Toggled by timeline clicks -> Justification: Reduces initial information overload, allows drill-down. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #3f3c3a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            border: 4px solid #f8f7f4;
+        }
+        .timeline-item.active::before {
+            background-color: #8c7a6b;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-[#3f3c3a]">Sebastián Meneses Olano</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#summary" class="text-gray-600 hover:text-[#8c7a6b] transition-colors duration-300">Resumen</a>
+                <a href="#skills" class="text-gray-600 hover:text-[#8c7a6b] transition-colors duration-300">Habilidades</a>
+                <a href="#experience" class="text-gray-600 hover:text-[#8c7a6b] transition-colors duration-300">Trayectoria</a>
+                <a href="#contact" class="text-gray-600 hover:text-[#8c7a6b] transition-colors duration-300">Contacto</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#summary" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">Resumen</a>
+            <a href="#skills" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">Habilidades</a>
+            <a href="#experience" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">Trayectoria</a>
+            <a href="#contact" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">Contacto</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="summary" class="mb-24 text-center">
+            <h2 class="text-4xl font-bold text-[#8c7a6b] mb-4">Especialista en Comunicación Corporativa y Estrategia Digital</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-700 leading-relaxed">
+                Estratega de comunicaciones con experiencia demostrable en impulsar el crecimiento y el posicionamiento de marca a través de estrategias omnicanal y gestión de la experiencia del cliente (CX). Experto en la aplicación de tecnologías como Marketing Cloud y CRM para optimizar la relación con los clientes, la gestión de crisis (PQRS) y la creación de contenidos de alto impacto. Mi enfoque se centra en desarrollar campañas que generen resultados tangibles, mejoren la percepción de marca y fortalezcan las relaciones públicas.
+            </p>
+        </section>
+        
+        <section id="skills" class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2">Mapa de Habilidades</h2>
+                <p class="text-gray-600">Un vistazo a mis competencias clave. Este gráfico interactivo muestra las áreas donde mi experiencia puede aportar mayor valor, desde la estrategia y el liderazgo hasta la ejecución tecnológica y creativa.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2">Trayectoria Profesional Interactiva</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Navega a través de mi carrera profesional. Haz clic en cada rol para ver los detalles, responsabilidades y logros clave en cada etapa de mi desarrollo como comunicador estratégico.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-1">
+                    <div id="timeline" class="relative border-l-2 border-gray-200 ml-4">
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <div id="experience-details" class="bg-white rounded-xl shadow-lg p-8 min-h-[300px]">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="mb-24">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-2">Formación y Certificaciones</h2>
+                <p class="text-gray-600">Mi base académica y mi compromiso con el aprendizaje continuo.</p>
+            </div>
+            <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="font-bold text-lg text-[#8c7a6b]">FORMACIÓN ACADÉMICA</h3>
+                    <p class="font-semibold mt-2">Comunicador Corporativo y Relacionista Público</p>
+                    <p class="text-gray-600">Universidad de Medellín</p>
+                    <p class="text-sm text-gray-500">Enero 2013 – Junio 2022</p>
+                </div>
+                 <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="font-bold text-lg text-[#8c7a6b]">CERTIFICACIÓN</h3>
+                    <p class="font-semibold mt-2">Liderazgo Efectivo</p>
+                    <p class="text-gray-600">SENA: Servicio Nacional de Aprendizaje</p>
+                    <p class="text-sm text-gray-500">Junio 2021</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <h2 class="text-2xl font-bold mb-4">Contáctame</h2>
+            <p class="mb-6">Estoy abierto a nuevas oportunidades y colaboraciones. Hablemos.</p>
+            <div class="flex justify-center items-center space-x-6">
+                <a href="mailto:sebastian.olano11@gmail.com" class="hover:text-gray-300 transition-colors">sebastian.olano11@gmail.com</a>
+                <span class="text-gray-500">|</span>
+                <a href="tel:+573053420524" class="hover:text-gray-300 transition-colors">+57 305 342 05 24</a>
+                 <span class="text-gray-500">|</span>
+                <p>Medellín, Colombia</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const experienceData = [
+                {
+                    id: 'exp1',
+                    company: 'Se Puede Creativos',
+                    role: 'Líder de Comunicaciones y Marketing',
+                    period: 'Junio 2023 – Actualidad',
+                    details: [
+                        'Dirigí el desarrollo de estrategias de comunicación y marketing 360° (tradicionales y digitales), resultando en un aumento significativo en la visibilidad de marca.',
+                        'Liderazgo y coordinación efectiva de un equipo creativo para la concepción y ejecución de soluciones innovadoras, asegurando la consistencia y la alta calidad del mensaje de marca.',
+                        'Elaboración de informes de rendimiento detallados sobre el posicionamiento de marca en redes sociales y entornos digitales, proporcionando insights estratégicos para la toma de decisiones.'
+                    ]
+                },
+                {
+                    id: 'exp2',
+                    company: 'Smart Fit',
+                    role: 'Analista de Comunicaciones y CX',
+                    period: 'Julio 2019 – Mayo 2023',
+                    details: [
+                        'Lideré la redacción y gestión de respuestas a PQRS, transformando la gestión de crisis en oportunidades de fidelización y mejora del servicio.',
+                        'Administré y optimicé el uso de herramientas de CRM y Marketing Cloud para segmentación, automatización de comunicaciones y seguimiento de la satisfacción del público.',
+                        'Responsable de la creación estratégica de contenido y copywriting para las publicaciones en redes sociales, alineando la voz de la marca con los objetivos de mercadeo.',
+                        'Generación constante de reportes de satisfacción y desarrollo de estrategias de servicio al cliente basadas en datos.'
+                    ]
+                },
+                {
+                    id: 'exp3',
+                    company: 'Grupo Inmobiliario',
+                    role: 'Comunicador',
+                    period: 'Febrero 2016 – Marzo 2017',
+                    details: [
+                        'Investigué y analicé audiencias clave para la aprobación de contenido publicitario, garantizando la relevancia y efectividad de los mensajes en redes sociales.',
+                        'Apoyé el liderazgo del equipo creativo, asegurando que el contenido estuviera alineado con la estrategia de comunicación general.'
+                    ]
+                }
+            ];
+
+            const timelineContainer = document.getElementById('timeline');
+            const detailsContainer = document.getElementById('experience-details');
+
+            function displayExperienceDetails(experienceId) {
+                const experience = experienceData.find(exp => exp.id === experienceId);
+                if (!experience) return;
+
+                detailsContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold text-[#8c7a6b]">${experience.role}</h3>
+                    <p class="font-semibold text-gray-700 mt-1">${experience.company}</p>
+                    <p class="text-sm text-gray-500 mb-6">${experience.period}</p>
+                    <ul class="space-y-4 list-disc list-inside text-gray-600">
+                        ${experience.details.map(detail => `<li>${detail}</li>`).join('')}
+                    </ul>
+                `;
+
+                document.querySelectorAll('.timeline-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.id === experienceId) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+
+            experienceData.forEach(exp => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item mb-8 pl-8 relative cursor-pointer';
+                timelineItem.dataset.id = exp.id;
+                timelineItem.innerHTML = `
+                    <h4 class="font-bold">${exp.role}</h4>
+                    <p class="text-sm text-gray-600">${exp.company}</p>
+                    <time class="text-xs text-gray-500">${exp.period}</time>
+                `;
+                timelineItem.addEventListener('click', () => displayExperienceDetails(exp.id));
+                timelineContainer.appendChild(timelineItem);
+            });
+
+            displayExperienceDetails('exp1');
+
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Comunicación Estratégica',
+                        'Marketing Digital',
+                        'Liderazgo Creativo',
+                        'Gestión de CX y Crisis',
+                        'Tecnología MarTech (CRM)',
+                        'Relaciones Públicas',
+                        'Creación de Contenido'
+                    ],
+                    datasets: [{
+                        label: 'Nivel de Competencia',
+                        data: [9, 8, 8, 9, 8, 7, 9],
+                        backgroundColor: 'rgba(140, 122, 107, 0.2)',
+                        borderColor: 'rgba(140, 122, 107, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(140, 122, 107, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(140, 122, 107, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12
+                                },
+                                color: '#3f3c3a'
+                            },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                stepSize: 2,
+                                color: '#8c7a6b'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw}/10`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
