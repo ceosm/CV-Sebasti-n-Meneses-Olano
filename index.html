@@ -49,6 +49,15 @@
         .timeline-item.active::before {
             background-color: #8c7a6b;
         }
+        /* Nuevo estilo para la foto de perfil */
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -81,6 +90,22 @@
     <main class="container mx-auto px-6 py-12">
 
         <section id="summary" class="mb-24 text-center">
+            <!-- SECCIÓN DE FOTO DE PERFIL AÑADIDA -->
+            <div class="mb-8">
+                <!-- 
+                    NOTA IMPORTANTE: Como no puedo subir ni guardar tu foto, 
+                    he puesto una imagen de marcador de posición (placeholder).
+                    DEBES REEMPLAZAR "https://placehold.co/150x150/8c7a6b/ffffff?text=Tu+Foto"
+                    con la URL de tu imagen de perfil real alojada en un sitio externo (como tu LinkedIn o un servicio de hosting de imágenes).
+                -->
+                <img 
+                    src="https://placehold.co/150x150/8c7a6b/ffffff?text=Tu+Foto" 
+                    alt="Foto de perfil de Sebastián Meneses Olano" 
+                    class="profile-pic mx-auto"
+                    onerror="this.onerror=null; this.src='https://placehold.co/150x150/cccccc/000000?text=Foto+Placeholder';"
+                >
+            </div>
+            
             <h2 class="text-4xl font-bold text-[#8c7a6b] mb-4">Especialista en Comunicación Corporativa y Estrategia Digital</h2>
             <p class="max-w-3xl mx-auto text-lg text-gray-700 leading-relaxed">
                 Estratega de comunicaciones con experiencia demostrable en impulsar el crecimiento y el posicionamiento de marca a través de estrategias omnicanal y gestión de la experiencia del cliente (CX). Experto en la aplicación de tecnologías como Marketing Cloud y CRM para optimizar la relación con los clientes, la gestión de crisis (PQRS) y la creación de contenidos de alto impacto. Mi enfoque se centra en desarrollar campañas que generen resultados tangibles, mejoren la percepción de marca y fortalezcan las relaciones públicas.
